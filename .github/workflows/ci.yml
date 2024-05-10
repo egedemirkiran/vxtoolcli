@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  ci:
+    name: CI
+    strategy:
+      matrix:
+        os: [windows-latest]
+        toolchain: 
+          - stable
+          - nightly
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run rust problem matcher
+        uses: r7kamura/rust-problem-matchers@main
+      - name: Setup or update Rust ${{ matrix.toolchain }} toolchain
+        run: rustup toolchain install ${{ matrix.toolchain }} --profile default
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.toolchain }}
+      - name: Run linter
+        run: cargo clippy --verbose --all
