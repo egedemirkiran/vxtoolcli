@@ -18,7 +18,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Run rust problem matcher
         uses: r7kamura/rust-problem-matchers@main
       - name: Setup or update Rust ${{ matrix.toolchain }} toolchain
